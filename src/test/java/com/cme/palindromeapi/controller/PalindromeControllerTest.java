@@ -21,8 +21,8 @@ import org.springframework.util.ResourceUtils;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import static com.cme.palindromeapi.utils.Constants.IS_NOT_A_PALINDROME_MSG;
-import static com.cme.palindromeapi.utils.Constants.IS_PALINDROME_MSG;
+import static com.cme.palindromeapi.util.PalindromeTestConstants.IS_NOT_A_PALINDROME_MSG;
+import static com.cme.palindromeapi.util.PalindromeTestConstants.IS_PALINDROME_MSG;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
