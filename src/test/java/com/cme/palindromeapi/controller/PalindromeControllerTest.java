@@ -44,6 +44,10 @@ class PalindromeControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    private static final String URL_TEMPLATE = "/api/isPalindrome";
+
+    private static final String REQUEST_OBJECT_FILE_PATH = "classpath:data/RequestObject.json";
+
     @Test
     @DisplayName("Given valid request object then return is palindrome")
     void testWithValidTextValueIsPalindromeSuccess() throws Exception {
@@ -86,9 +90,9 @@ class PalindromeControllerTest {
 
     private RequestBuilder performRequest() throws IOException {
         return MockMvcRequestBuilders.post
-                        ("/api/isPalindrome")
+                        (URL_TEMPLATE)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(Files.readAllBytes(ResourceUtils.getFile("classpath:data/RequestObject.json").toPath()));
+                .content(Files.readAllBytes(ResourceUtils.getFile(REQUEST_OBJECT_FILE_PATH).toPath()));
     }
 
 }
