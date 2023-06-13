@@ -1,0 +1,9 @@
+async:
+  properties:
+    corePoolSize: 2
+    maxPoolSize: 4
+    queueCapacity: 500
+
+properties:
+  patterns:
+    - "\\s|\\d"

@@ -23,6 +23,8 @@ public class PalindromeController {
     public ResponseEntity<ResponseObject> isPalindrome(
             @RequestBody final RequestObject request) {
 
+        log.info("Received request : {}", request);
+
         ResponseObject responseObject = service.checkIsPalindrome(request);
 
         return new ResponseEntity<>(responseObject, responseObject.getHttpStatus());

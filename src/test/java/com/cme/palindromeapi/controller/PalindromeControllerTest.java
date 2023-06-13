@@ -2,10 +2,10 @@ package com.cme.palindromeapi.controller;
 
 import com.cme.palindromeapi.model.ResponseObject;
 import com.cme.palindromeapi.service.PalindromeService;
+import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,9 +38,6 @@ class PalindromeControllerTest {
     @MockBean
     private PalindromeService service;
 
-    @Mock
-    private ResponseObject responseObject;
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -51,17 +48,23 @@ class PalindromeControllerTest {
     @Test
     @DisplayName("Given valid request object then return is palindrome")
     void testWithValidTextValueIsPalindromeSuccess() throws Exception {
-
-        setUpMocks(String.format(IS_PALINDROME_MSG, "kayak"));
-
+        ResponseObject responseObject = generateResponse(String.format(IS_PALINDROME_MSG, "kayak"), HttpStatus.OK);
+        setUpMocks(responseObject);
         final RequestBuilder requestBuilder = performRequest();
-
         final MockHttpServletResponse response = mockMvc.perform(requestBuilder).andReturn().getResponse();
-
+        String responseBody = response.getContentAsString();
+        JSONObject jsonResponse = new JSONObject(responseBody);
         assertNotNull(response);
         assertEquals(200, response.getStatus());
-        assertEquals("'kayak' is a palindrome", response.getContentAsString());
+        assertEquals("'kayak' is a palindrome", jsonResponse.getString("data"));
 
+    }
+
+    private ResponseObject generateResponse(String data, HttpStatus status) {
+        ResponseObject responseObject = new ResponseObject();
+        responseObject.setData(data);
+        responseObject.setHttpStatus(status);
+        return responseObject;
     }
 
 
@@ -69,23 +72,21 @@ class PalindromeControllerTest {
     @DisplayName("Given valid request object then return is not a palindrome")
     void testWithValidTextValueIsNotPalindromeSuccess() throws Exception {
 
-        setUpMocks(String.format(IS_NOT_A_PALINDROME_MSG, "test"));
-
+        ResponseObject responseObject = generateResponse(String.format(IS_NOT_A_PALINDROME_MSG, "test"), HttpStatus.OK);
+        setUpMocks(responseObject);
         final RequestBuilder requestBuilder = performRequest();
-
         final MockHttpServletResponse response = mockMvc.perform(requestBuilder).andReturn().getResponse();
+        String responseBody = response.getContentAsString();
+        JSONObject jsonResponse = new JSONObject(responseBody);
 
         assertNotNull(response);
         assertEquals(200, response.getStatus());
-        assertEquals("'test' is not a palindrome", response.getContentAsString());
+        assertEquals("'test' is not a palindrome", jsonResponse.getString("data"));
 
     }
 
-    private void setUpMocks(String data) {
+    private void setUpMocks(ResponseObject responseObject) {
         when(service.checkIsPalindrome(any())).thenReturn(responseObject);
-        when(responseObject.getData()).thenReturn(data);
-        when(responseObject.getHttpStatus()).thenReturn(HttpStatus.OK);
-
     }
 
     private RequestBuilder performRequest() throws IOException {

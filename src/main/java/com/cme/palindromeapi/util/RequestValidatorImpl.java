@@ -1,41 +1,52 @@
 package com.cme.palindromeapi.util;
 
+import com.cme.palindromeapi.config.PatternConfig;
 import com.cme.palindromeapi.exception.ValidationException;
 import com.cme.palindromeapi.model.RequestObject;
+import org.springframework.stereotype.Component;
 
-import static com.cme.palindromeapi.util.PalindromeConstants.INVALID_PATTERN;
+import java.util.List;
+import java.util.regex.Pattern;
 
-public class RequestValidator {
+@Component
+public class RequestValidatorImpl implements RequestValidator {
 
-    private RequestValidator(){}
+    private final PatternConfig patternConfig;
 
-    public static void isValid(RequestObject request) {
+    public RequestValidatorImpl(PatternConfig patternConfig) {
+        this.patternConfig=patternConfig;
+    }
+
+    public void isValid(RequestObject request) {
 
         isRequestNull(request);
         isTextValueMissing(request);
         isBlank(request);
-        doesContainInvalidChars(request);
+        doesContainInvalidChars(request, patternConfig.getPatterns());
 
     }
 
-    private static void isRequestNull(RequestObject request) {
+    private void isRequestNull(RequestObject request) {
         if(request==null) {
             throw new ValidationException("Request cannot be null");
         }
     }
 
-    private static void doesContainInvalidChars(RequestObject request) {
-        if(INVALID_PATTERN.matcher(request.getTextValue()).find()) {
-            throw new ValidationException("Request textValue contains invalid characters");
+    private void doesContainInvalidChars(RequestObject request, List<String> patterns) {
+        for(String pattern : patterns) {
+            Pattern p = Pattern.compile(pattern);
+            if(p.matcher(request.getTextValue()).find()) {
+                throw new ValidationException("Request textValue contains invalid characters");
+            }
         }
     }
 
-    private static void isTextValueMissing(RequestObject request) {
+    private void isTextValueMissing(RequestObject request) {
         isNull(request);
         isBlank(request);
     }
 
-    private static void isBlank(RequestObject request) {
+    private void isBlank(RequestObject request) {
         if(request.getTextValue().isBlank()) {
             throw new ValidationException("Request textValue cannot be blank");
         }
