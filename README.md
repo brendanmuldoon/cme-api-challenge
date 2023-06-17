@@ -21,11 +21,33 @@ POST - /api/isPalindrome
     "textValue": "kayak"
 }
 ```
-### Response
-```
+### Successful Response
+```json
 {
     "code": 200,
     "httpStatus": "OK",
     "data": "isPalindrome: true"
+}
+```
+### Error Responses
+```json
+{
+    "code": 400,
+    "httpStatus": "BAD_REQUEST",
+    "message": "Validation error : Request textValue cannot be blank"
+}
+```
+```json
+{
+    "code": 400,
+    "httpStatus": "BAD_REQUEST",
+    "message": "Validation error : Request textValue cannot be null"
+}
+```
+```json
+{
+    "code": 400,
+    "httpStatus": "BAD_REQUEST",
+    "message": "Validation error : Request textValue contains invalid characters"
 }
 ```
