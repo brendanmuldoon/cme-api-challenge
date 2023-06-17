@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -58,6 +60,16 @@ class PalindromeFileRepositoryImplTest {
         assertThat(output).contains("Message successfully stored in the database");
         assertTrue(true);
         cleanUp();
+    }
+
+    @Test
+    @DisplayName("Read all values from database")
+    void testReadAll() {
+
+        List<String> response = repository.readAll();
+        assertNotNull(response);
+        assertTrue(true);
+
     }
 
     private void cleanUp() {
