@@ -7,26 +7,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 @Service
 @Slf4j
 public class CacheServiceImpl implements CacheService {
 
-    private final Map<String, Boolean> textValueMap = new ConcurrentHashMap<>();
+    private final Map<String, Boolean> textValueMap;
 
     private final PalindromeRepository palindromeRepository;
 
-    public CacheServiceImpl(PalindromeRepository palindromeRepository) {
+    private final ObjectMapper mapper;
+
+    public CacheServiceImpl(PalindromeRepository palindromeRepository,
+                            ObjectMapper mapper,
+                            ConcurrentMap<String, Boolean> textValueMap) {
+        this.textValueMap = textValueMap;
         this.palindromeRepository  = palindromeRepository;
-        loadValuesIntoCache();
+        this.mapper = mapper;
     }
 
+    @PostConstruct
     private void loadValuesIntoCache() {
         List<String> data = palindromeRepository.readAll();
-        ObjectMapper mapper = new ObjectMapper();
         int count = 0;
         for(String value : data) {
             try {
@@ -39,7 +45,7 @@ public class CacheServiceImpl implements CacheService {
         }
 
         if(count>0) {
-            log.error("Error loading {} objects from the data storage", count);
+            log.error("Error loading {} objects from the data storage on startup", count);
 
         }
         log.info("Database values loaded into cache");

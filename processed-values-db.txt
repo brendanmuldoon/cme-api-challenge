@@ -3,3 +3,7 @@
 {"textValue":"mum","palindrome":true}
 {"textValue":"kayak","palindrome":true}
 {"textValue":"keyak","palindrome":false}
+{"textValue":"foof","palindrome":true}
+{"textValue":"turn","palindrome":false}
+{"textValue":"bood","palindrome":false}
+{"textValue":"dood","palindrome":true}
