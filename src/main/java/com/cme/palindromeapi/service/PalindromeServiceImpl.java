@@ -34,7 +34,7 @@ public class PalindromeServiceImpl implements PalindromeService {
         String textValueToLowerCase = request.getTextValue().toLowerCase();
         StoredTextValue cachedValue = cacheService.findByKey(textValueToLowerCase);
         if(isNull(cachedValue)) {
-            log.info("Adding new value value...");
+            log.info("Adding new value...");
             boolean textValueIsPalindrome = isPalindrome(textValueToLowerCase);
             StoredTextValue storedTextValue = generateStoredTextValue(textValueToLowerCase, textValueIsPalindrome);
             cacheService.storeProcessedValue(storedTextValue);

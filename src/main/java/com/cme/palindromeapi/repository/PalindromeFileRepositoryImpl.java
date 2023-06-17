@@ -2,6 +2,7 @@ package com.cme.palindromeapi.repository;
 
 import com.cme.palindromeapi.exception.DataStorageException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -25,7 +26,16 @@ public class PalindromeFileRepositoryImpl implements PalindromeRepository {
     @Override
     public void write(String message) {
         log.info("Storing message in the database");
-        writeToFile(message);
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
+            if(!containsMessage(message)) {
+                writer.write(String.format("%s%n",message));
+                log.info("Message successfully stored in the database");
+            }
+            writer.close();
+        } catch (IOException ex) {
+            throw new DataStorageException(ex.getMessage());
+        }
     }
 
     @Override
@@ -47,20 +57,6 @@ public class PalindromeFileRepositoryImpl implements PalindromeRepository {
             throw new DataStorageException(ex.getMessage());
         }
         return fileData;
-    }
-
-    private void writeToFile(String message) {
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
-            if(!containsMessage(message)) {
-                writer.write(String.format("%s%n",message));
-                log.info("Message successfully stored in the database");
-            }
-            writer.close();
-        } catch (IOException ex) {
-            throw new DataStorageException(ex.getMessage());
-        }
-
     }
 
     private boolean containsMessage(String message) {
