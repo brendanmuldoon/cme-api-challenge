@@ -1,0 +1,15 @@
+spring:
+  activemq:
+    in-memory: true
+    pool:
+      enabled: false
+    port: 8082
+    queue:
+      name: "local.in-memory.palindrome.queue"
+
+file:
+  name: "processed-values-db.txt"
+
+properties:
+  patterns:
+    - "\\s|\\d"
