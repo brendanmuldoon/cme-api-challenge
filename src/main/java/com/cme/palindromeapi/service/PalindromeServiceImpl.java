@@ -4,47 +4,42 @@ import com.cme.palindromeapi.model.RequestObject;
 import com.cme.palindromeapi.model.ResponseObject;
 import com.cme.palindromeapi.model.StoredTextValue;
 import com.cme.palindromeapi.publisher.Publisher;
-import com.cme.palindromeapi.repository.PalindromeRepository;
 import com.cme.palindromeapi.util.RequestValidator;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import static java.util.Objects.isNull;
 
 @Slf4j
 @Service
 public class PalindromeServiceImpl implements PalindromeService {
 
     private final RequestValidator requestValidator;
-    private final PalindromeRepository palindromeRepository;
     private final CacheService cacheService;
     private final Publisher publisher;
 
     public PalindromeServiceImpl(RequestValidator requestValidator,
-                                 PalindromeRepository palindromeRepository,
                                  CacheService cacheService,
                                  Publisher publisher) {
         this.requestValidator = requestValidator;
-        this.palindromeRepository = palindromeRepository;
         this.cacheService = cacheService;
         this.publisher = publisher;
     }
 
     @Override
-    public ResponseObject checkIsPalindrome(RequestObject request) { // add logging
-        log.info("Validating request...");
+    public ResponseObject checkIsPalindrome(RequestObject request) throws JsonProcessingException {
         requestValidator.isValid(request);
-        log.info("Request is valid... Proceeding to check if {} is in the cache...", request.getTextValue());
-
-        StoredTextValue cachedValue = cacheService.findByKey(request.getTextValue());
-
-        if(cachedValue==null) {
+        String textValueToLowerCase = request.getTextValue().toLowerCase();
+        StoredTextValue cachedValue = cacheService.findByKey(textValueToLowerCase);
+        if(isNull(cachedValue)) {
             log.info("Adding new value value...");
-            boolean textValueIsPalindrome = isPalindrome(request.getTextValue().toLowerCase());
-            StoredTextValue storedTextValue = generateStoredTextValue(request.getTextValue(), textValueIsPalindrome);
+            boolean textValueIsPalindrome = isPalindrome(textValueToLowerCase);
+            StoredTextValue storedTextValue = generateStoredTextValue(textValueToLowerCase, textValueIsPalindrome);
             cacheService.storeProcessedValue(storedTextValue);
             publisher.sendMessage(storedTextValue);
             return generateResponse(String.format("isPalindrome: %s", textValueIsPalindrome));
-
         }
         log.info("Returning existing value...");
         return generateResponse(String.format("isPalindrome: %s", cachedValue.isPalindrome()));

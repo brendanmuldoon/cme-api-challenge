@@ -1,37 +1,84 @@
 package com.cme.palindromeapi.repository;
 
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.scheduling.annotation.Async;
+import com.cme.palindromeapi.exception.DataStorageException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
+@Slf4j
 public class PalindromeFileRepositoryImpl implements PalindromeRepository {
 
-    private final CacheManager cacheManager;
 
-    public PalindromeFileRepositoryImpl(CacheManager cacheManager) {
-        this.cacheManager=cacheManager;
-    }
-
+    @Value("${file.name}")
+    private String fileName;
 
     @Override
-    public void write(String textValue, boolean textValueIsPalindrome) {
-//        textValueMap.put(textValue, textValueIsPalindrome);
+    public void write(String message) {
+        log.info("Storing message in the database");
+        writeToFile(message);
     }
 
     @Override
-    @Cacheable("textValues")
-    public Boolean readValue(String textValue) {
-        return null;
+    public List<String> readAll() {
+        List<String> fileData = new ArrayList<>();
+        try {
+            File file = new File(fileName);
+            if(!file.exists()) {
+                file.createNewFile();
+                return fileData;
+            }
+            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+            String line;
+            while((line = reader.readLine())!=null) {
+                fileData.add(line);
+            }
+            reader.close();
+        } catch (IOException ex) {
+            throw new DataStorageException(ex.getMessage());
+        }
+        return fileData;
     }
 
-    @Override
-    public Boolean doesContainTextValue(String textValue) {
-        return null;
+    private void writeToFile(String message) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
+            if(!containsMessage(message)) {
+                writer.write(String.format("%s%n",message));
+                log.info("Message successfully stored in the database");
+            }
+            writer.close();
+        } catch (IOException ex) {
+            throw new DataStorageException(ex.getMessage());
+        }
+
     }
+
+    private boolean containsMessage(String message) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+            String line;
+            while((line = reader.readLine())!=null) {
+                if(line.trim().equals(message)) {
+                    log.info("Message already stored in the database");
+                    reader.close();
+                    return true;
+                }
+            }
+            reader.close();
+            } catch (IOException ex) {
+                throw new DataStorageException(ex.getMessage());
+            }
+        return false;
+    }
+
 }

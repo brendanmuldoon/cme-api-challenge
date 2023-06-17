@@ -3,12 +3,14 @@ package com.cme.palindromeapi.util;
 import com.cme.palindromeapi.config.PatternConfig;
 import com.cme.palindromeapi.exception.ValidationException;
 import com.cme.palindromeapi.model.RequestObject;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.regex.Pattern;
 
 @Component
+@Slf4j
 public class RequestValidatorImpl implements RequestValidator {
 
     private final PatternConfig patternConfig;
@@ -18,16 +20,15 @@ public class RequestValidatorImpl implements RequestValidator {
     }
 
     public void isValid(RequestObject request) {
-
+        log.info("Validating request...");
         isRequestNull(request);
-        isTextValueMissing(request);
-        isBlank(request);
+        isTextValueNullOrBlank(request);
         doesContainInvalidChars(request, patternConfig.getPatterns());
-
+        log.info("Request is valid...");
     }
 
     private void isRequestNull(RequestObject request) {
-        if(request==null) {
+        if(request == null) {
             throw new ValidationException("Request cannot be null");
         }
     }
@@ -41,7 +42,7 @@ public class RequestValidatorImpl implements RequestValidator {
         }
     }
 
-    private void isTextValueMissing(RequestObject request) {
+    private void isTextValueNullOrBlank(RequestObject request) {
         isNull(request);
         isBlank(request);
     }
@@ -52,7 +53,7 @@ public class RequestValidatorImpl implements RequestValidator {
         }
     }
 
-    private static void isNull(RequestObject request) {
+    private void isNull(RequestObject request) {
         if(request.getTextValue()==null) {
             throw new ValidationException("Request textValue cannot be null");
         }

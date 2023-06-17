@@ -1,0 +1,3 @@
+{"textValue":"mom","palindrome":true}
+{"textValue":"bob","palindrome":true}
+{"textValue":"mum","palindrome":true}

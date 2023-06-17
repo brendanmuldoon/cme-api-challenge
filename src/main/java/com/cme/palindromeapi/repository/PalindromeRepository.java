@@ -1,10 +1,10 @@
 package com.cme.palindromeapi.repository;
 
+import java.util.List;
+
 public interface PalindromeRepository {
 
-    void write(String textValue, boolean textValueIsPalindrome);
+    void write(String message);
 
-    Boolean readValue(String textValue);
-
-    Boolean doesContainTextValue(String textValue);
+    List<String> readAll();
 }

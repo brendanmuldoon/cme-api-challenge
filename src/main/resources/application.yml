@@ -1,8 +1,14 @@
-async:
-  properties:
-    corePoolSize: 2
-    maxPoolSize: 4
-    queueCapacity: 500
+spring:
+  activemq:
+    in-memory: true
+    pool:
+      enabled: false
+    port: 8082
+    queue:
+      name: "local.in-memory.palindrome.queue"
+
+file:
+  name: "processed-values-db.txt"
 
 properties:
   patterns:
