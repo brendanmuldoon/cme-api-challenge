@@ -8,6 +8,24 @@ A REST API that accepts a username and text value, and returns whether that valu
 
 
 # Base Path
-http://localhost:8080/api/isPalindrome
+http://localhost:8080
 
-Resources
+# Resources
+POST - /api/isPalindrome
+
+# Request & Response
+### Valid Request
+```json
+{
+    "username": "username",
+    "textValue": "kayak"
+}
+```
+### Response
+```
+{
+    "code": 200,
+    "httpStatus": "OK",
+    "data": "isPalindrome: true"
+}
+```
