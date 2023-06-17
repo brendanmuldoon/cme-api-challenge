@@ -30,11 +30,6 @@ public class PalindromeController {
 
         return new ResponseEntity<>(responseObject, responseObject.getHttpStatus());
 
-//        if(storedTextValue.isPalindrome()) {
-//            return new ResponseEntity<>("IS A PALINDROME", HttpStatus.OK);
-//        }
-//
-//        return new ResponseEntity<>("IS NOT A PALINDROME", HttpStatus.BAD_REQUEST);
 
     }
 
