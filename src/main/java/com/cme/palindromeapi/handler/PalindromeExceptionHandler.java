@@ -14,37 +14,37 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class PalindromeExceptionHandler {
 
-    private PalindromeExceptionHandler(){}
+    //private PalindromeExceptionHandler(){}
 
     @ExceptionHandler({Exception.class})
-    public static ResponseEntity<Object> handleException(Exception ex) {
+    public ResponseEntity<Object> handleException(Exception ex) {
         String msg = String.format("Error : %s", ex.getMessage());
         log.error(msg);
         return generateResponseEntity(msg, HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler({ValidationException.class})
-    public static ResponseEntity<Object> handleValidationException(ValidationException ex) {
+    public ResponseEntity<Object> handleValidationException(ValidationException ex) {
         String msg = String.format("Validation error : %s", ex.getMessage());
         log.error(msg);
         return generateResponseEntity(msg, HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({DataStorageException.class})
-    public static ResponseEntity<Object> handleDataStorageException(DataStorageException ex) {
+    public ResponseEntity<Object> handleDataStorageException(DataStorageException ex) {
         String msg = String.format("DataStorageException error : %s", ex.getMessage());
         log.error(msg);
-        return generateResponseEntity(msg, HttpStatus.BAD_REQUEST.value(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return generateResponseEntity(msg, HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler({GenericException.class})
-    public static ResponseEntity<Object> handleGenericException(GenericException ex) {
+    public ResponseEntity<Object> handleGenericException(GenericException ex) {
         String msg = String.format("GenericException error : %s", ex.getMessage());
         log.error(msg);
-        return generateResponseEntity(msg, HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST);
+        return generateResponseEntity(msg, HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    private static ResponseEntity<Object> generateResponseEntity(String msg, int code, HttpStatus httpStatus) {
+    private ResponseEntity<Object> generateResponseEntity(String msg, int code, HttpStatus httpStatus) {
         ResponseObject responseObject = new ResponseObject();
         responseObject.setHttpStatus(httpStatus);
         responseObject.setCode(code);

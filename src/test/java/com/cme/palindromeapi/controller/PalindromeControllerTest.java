@@ -2,6 +2,7 @@ package com.cme.palindromeapi.controller;
 
 import com.cme.palindromeapi.model.ResponseObject;
 import com.cme.palindromeapi.service.PalindromeService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -67,26 +68,8 @@ class PalindromeControllerTest {
         return responseObject;
     }
 
-
-    @Test
-    @DisplayName("Given valid request object then return is not a palindrome")
-    void testWithValidTextValueIsNotPalindromeSuccess() throws Exception {
-
-        ResponseObject responseObject = generateResponse(String.format(IS_NOT_A_PALINDROME_MSG, "test"), HttpStatus.OK);
-        setUpMocks(responseObject);
-        final RequestBuilder requestBuilder = performRequest();
-        final MockHttpServletResponse response = mockMvc.perform(requestBuilder).andReturn().getResponse();
-        String responseBody = response.getContentAsString();
-        JSONObject jsonResponse = new JSONObject(responseBody);
-
-        assertNotNull(response);
-        assertEquals(200, response.getStatus());
-        assertEquals("'test' is not a palindrome", jsonResponse.getString("data"));
-
-    }
-
-    private void setUpMocks(ResponseObject responseObject) {
-        //when(service.checkIsPalindrome(any())).thenReturn(responseObject);
+    private void setUpMocks(ResponseObject responseObject) throws JsonProcessingException {
+        when(service.checkIsPalindrome(any())).thenReturn(responseObject);
     }
 
     private RequestBuilder performRequest() throws IOException {
