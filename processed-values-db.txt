@@ -1,3 +1,5 @@
 {"textValue":"mom","palindrome":true}
 {"textValue":"bob","palindrome":true}
 {"textValue":"mum","palindrome":true}
+{"textValue":"kayak","palindrome":true}
+{"textValue":"keyak","palindrome":false}
