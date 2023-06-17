@@ -86,7 +86,7 @@ class PalindromeControllerTest {
     }
 
     private void setUpMocks(ResponseObject responseObject) {
-        when(service.checkIsPalindrome(any())).thenReturn(responseObject);
+        //when(service.checkIsPalindrome(any())).thenReturn(responseObject);
     }
 
     private RequestBuilder performRequest() throws IOException {

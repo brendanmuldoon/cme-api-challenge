@@ -2,6 +2,8 @@ package com.cme.palindromeapi.service;
 
 import com.cme.palindromeapi.model.RequestObject;
 import com.cme.palindromeapi.model.ResponseObject;
+import com.cme.palindromeapi.model.StoredTextValue;
+import com.cme.palindromeapi.publisher.Publisher;
 import com.cme.palindromeapi.repository.PalindromeRepository;
 import com.cme.palindromeapi.util.RequestValidator;
 import lombok.extern.slf4j.Slf4j;
@@ -14,44 +16,42 @@ public class PalindromeServiceImpl implements PalindromeService {
 
     private final RequestValidator requestValidator;
     private final PalindromeRepository palindromeRepository;
+    private final CacheService cacheService;
+    private final Publisher publisher;
 
-    public PalindromeServiceImpl(RequestValidator requestValidator, PalindromeRepository palindromeRepository) {
+    public PalindromeServiceImpl(RequestValidator requestValidator,
+                                 PalindromeRepository palindromeRepository,
+                                 CacheService cacheService,
+                                 Publisher publisher) {
         this.requestValidator = requestValidator;
         this.palindromeRepository = palindromeRepository;
+        this.cacheService = cacheService;
+        this.publisher = publisher;
     }
 
     @Override
     public ResponseObject checkIsPalindrome(RequestObject request) { // add logging
-        log.info("Checking if request is valid...");
+        log.info("Validating request...");
         requestValidator.isValid(request);
         log.info("Request is valid... Proceeding to check if {} is in the cache...", request.getTextValue());
 
-        if(!existsInCache(request.getTextValue())) {
-            log.info("{} is not in the cache... adding now...", request.getTextValue());
+        StoredTextValue cachedValue = cacheService.findByKey(request.getTextValue());
+
+        if(cachedValue==null) {
+            log.info("Adding new value value...");
             boolean textValueIsPalindrome = isPalindrome(request.getTextValue().toLowerCase());
-            palindromeRepository.write(request.getTextValue(), textValueIsPalindrome);
+            StoredTextValue storedTextValue = generateStoredTextValue(request.getTextValue(), textValueIsPalindrome);
+            cacheService.storeProcessedValue(storedTextValue);
+            publisher.sendMessage(storedTextValue);
+            return generateResponse(String.format("isPalindrome: %s", textValueIsPalindrome));
 
-            if(textValueIsPalindrome) {
-                log.info("Confirmed, {} is a palindrome... ", request.getTextValue());
-                return generateResponse(String.format("%s is a palindrome", request.getTextValue()));
-            } else {
-                log.info("Confirmed, {} is not a palindrome...", request.getTextValue());
-                return generateResponse(String.format("%s is not a palindrome", request.getTextValue()));
-            }
         }
-        log.info("{} is in the cache already...", request.getTextValue());
-
-        if(palindromeRepository.readValue(request.getTextValue())){
-            log.info("Confirmed, {} is a palindrome...", request.getTextValue());
-
-            return generateResponse(String.format("%s is a palindrome", request.getTextValue()));
-        }
-        log.info("Confirmed, {} is not a palindrome...", request.getTextValue());
-        return generateResponse(String.format("%s is not a palindrome", request.getTextValue()));
+        log.info("Returning existing value...");
+        return generateResponse(String.format("isPalindrome: %s", cachedValue.isPalindrome()));
     }
 
-    private boolean existsInCache(String textValue) {
-        return palindromeRepository.doesContainTextValue(textValue);
+    private StoredTextValue generateStoredTextValue(String textValue, boolean textValueIsPalindrome) {
+        return new StoredTextValue(textValue, textValueIsPalindrome);
     }
 
     private ResponseObject generateResponse(String data) {
