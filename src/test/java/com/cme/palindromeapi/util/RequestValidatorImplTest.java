@@ -72,7 +72,7 @@ class RequestValidatorImplTest {
     @ParameterizedTest
     @ValueSource(strings = {" leadingSpace", "middle space", "numbers123", "numbersand spaces123"})
     @DisplayName("Throw a validation exception due to request containing invalid chars")
-    void testInvalidPatterns(String textValue) {
+    void testInvalidAndValidInputs(String textValue) {
         RequestObject requestObject = new RequestObject();
         requestObject.setTextValue(textValue);
         List<String> patterns = new ArrayList<>();
@@ -86,6 +86,15 @@ class RequestValidatorImplTest {
             return;
         }
         fail();
+    }
+
+    @Test
+    @DisplayName("No exceptions thrown")
+    void testValidValueSuccess() {
+        RequestObject requestObject = new RequestObject();
+        requestObject.setTextValue("valid");
+        requestValidator.isValid(requestObject);
+        assertTrue(true);
     }
 
 
