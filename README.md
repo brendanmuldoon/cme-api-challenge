@@ -13,6 +13,7 @@ A REST API that accepts a username and text value, and returns whether that valu
   * The API stores all VALID values processed regardless of whether or not it is a palindrome. Requests that do not pass validation are not stored
   * *For performance reasons the API response should not be dependent/blocked by the completion of the permanent persistence* - it was assumed that this meant using messaging for async commnication
   * For the purposes of data consitency, all processed values are stored in lowercase
+  * Specification mentions a username in the request but it is not clear what has to be done with it. The current storage of processed values is in thhe following format: `String: Boolean`, ie, `"kayak": true`. If required, then the solution could be changed to use the username as the key, and the value could be a `HashMap` like currently
 
 
 # Base Path
