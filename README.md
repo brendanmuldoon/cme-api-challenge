@@ -1,5 +1,5 @@
 # CME Group API Challenge
-A REST API that accepts a username and text value, and returns whether that value is a palindrome. The application will process the request against the pre-determined validation supplied in the `application.yml`.
+A REST API that accepts a username and text value, and returns whether that value is a palindrome. A palindrome is a word, number, phrase, or other sequence of characters which reads the same backward as forward, such as madam or kayak.
 
 # Assumptions
 
