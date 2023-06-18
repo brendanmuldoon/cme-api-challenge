@@ -1,4 +1,4 @@
-![Contributors](https://github.com/brendanmuldoon/cme-api-challenge.git)
+![Contributors](https://img.shields.io/github/contributors/brendanmuldoon/cme-api-challenge?style=plastic)
 
 # CME Group API Challenge
 A REST API that accepts a username and text value, and returns whether that value is a palindrome. A palindrome is a word, number, phrase, or other sequence of characters which reads the same backward as forward, such as madam or kayak.
