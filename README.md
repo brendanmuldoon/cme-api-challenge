@@ -1,5 +1,5 @@
-# cme-api-challenge
-A REST API that accepts a username and text value, and returns whether that value is a palindrome
+# CME Group API Challenge
+A REST API that accepts a username and text value, and returns whether that value is a palindrome. The application will process the request against the pre-determined validation supplied in the `application.yml`.
 
 # Assumptions
 
