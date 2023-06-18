@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.cme</groupId>
 	<artifactId>palindrome-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>palindrome-api</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
