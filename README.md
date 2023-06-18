@@ -48,6 +48,7 @@ POST - /api/isPalindrome
     "httpStatus": "OK",
     "data": "isPalindrome: false"
 }
+```
 ### Error Responses
 ```json
 {
