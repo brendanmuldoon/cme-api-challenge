@@ -1,4 +1,4 @@
-![Contributors](https://img.shields.io/github/contributors/brendanmuldoon/cme-api-challenge?style=plastic)
+![Contributors](https://img.shields.io/github/contributors/brendanmuldoon/cme-api-challenge)
 ![Issues](https://img.shields.io/github/issues/brendanmuldoon/cme-api-challenge)
 
 # CME Group API Challenge
