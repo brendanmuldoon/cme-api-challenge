@@ -1,8 +1,8 @@
 ![Contributors](https://img.shields.io/github/contributors/brendanmuldoon/cme-api-challenge)
 ![Issues](https://img.shields.io/github/issues/brendanmuldoon/cme-api-challenge)
 [![Java 11](https://img.shields.io/badge/Java-11-blue.svg)](https://java.oracle.com)
-[![Spring Boot 2.7.12](https://img.shields.io/badge/Spring%20Boot-2.7.12-brightgreen.svg)](https://spring.io/projects/spring-boot)
-[![Version](https://img.shields.io/badge/Version-1.0.0--SNAPSHOT-brightgreen.svg)](https://your-project-url)
+[![Spring Boot 2.7.12](https://img.shields.io/badge/Spring%20Boot-2.7.12-yellow.svg)](https://spring.io/projects/spring-boot)
+[![Version](https://img.shields.io/badge/Version-1.0.0--SNAPSHOT-purple.svg)](https://your-project-url)
 
 
 # CME Group API Challenge
