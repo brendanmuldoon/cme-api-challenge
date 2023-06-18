@@ -2,7 +2,7 @@
 ![Issues](https://img.shields.io/github/issues/brendanmuldoon/cme-api-challenge)
 [![Java 11](https://img.shields.io/badge/Java-11-blue.svg)](https://java.oracle.com)
 [![Spring Boot 2.7.12](https://img.shields.io/badge/Spring%20Boot-2.7.12-brightgreen.svg)](https://spring.io/projects/spring-boot)
-[![Version](https://img.shields.io/badge/Version-2.7.12-brightgreen.svg)](https://spring.io/projects/spring-boot)
+[![Version](https://img.shields.io/badge/Version-1.0.0-SNAPSHOT-brightgreen.svg)](https://spring.io/projects/spring-boot)
 
 # CME Group API Challenge
 A REST API that accepts a username and text value, and returns whether that value is a palindrome. A palindrome is a word, number, phrase, or other sequence of characters which reads the same backward as forward, such as madam or kayak.
