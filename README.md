@@ -21,14 +21,20 @@ http://localhost:8080
 POST - /api/isPalindrome
 
 # Request & Response
-### Valid Request
+### Valid Requests
 ```json
 {
     "username": "username",
     "textValue": "kayak"
 }
 ```
-### Successful Response
+```json
+{
+    "username": "username",
+    "textValue": "test"
+}
+```
+### Successful Responses
 ```json
 {
     "code": 200,
@@ -36,6 +42,12 @@ POST - /api/isPalindrome
     "data": "isPalindrome: true"
 }
 ```
+```json
+{
+    "code": 200,
+    "httpStatus": "OK",
+    "data": "isPalindrome: false"
+}
 ### Error Responses
 ```json
 {
