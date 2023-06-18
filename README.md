@@ -86,7 +86,7 @@ To easily add further validations over time simply update the `application.yml` 
 properties:
   patterns:
     - "\\s|\\d"
-    - "new pattern"1
+    - "new pattern1"
     - "new pattern2"
     ...
 ```
