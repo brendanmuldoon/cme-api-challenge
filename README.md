@@ -58,3 +58,22 @@ POST - /api/isPalindrome
     "message": "Validation error : Request textValue contains invalid characters"
 }
 ```
+# Future Extension
+## Messaging
+The api currently makes use of the in-memory message system `ActiveMQ`. To add your own messaging implementation you can
+add a new config in the `com.cme.palindromeapi.config` folder and configure it to your requirements. Then, you can implement the `Publish` &
+`Listener` interfaces to define your own implementation.
+## Data Storage
+The data storage currently adds data to a text file, `processed-values-db.txt`. To add your own data storage implementation, simply implement the
+`PalindromeRepository` interface and configure your own code. You will also need to add your configurations in the 
+`application.yml`.
+## Pattern Validation
+To easily add further validations over time simply update the `application.yml` like so:
+```
+properties:
+  patterns:
+    - "\\s|\\d"
+    - "new pattern"1
+    - "new pattern2"
+    ...
+```
