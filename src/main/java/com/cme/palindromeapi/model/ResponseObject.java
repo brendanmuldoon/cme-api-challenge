@@ -20,4 +20,9 @@ public class ResponseObject {
     private String message;
     private String data;
 
+    public ResponseObject(int code, String data, HttpStatus httpStatus) {
+        this.code = code;
+        this.data = data;
+        this.httpStatus = httpStatus;
+    }
 }

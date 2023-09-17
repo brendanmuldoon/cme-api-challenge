@@ -24,15 +24,13 @@ public class PalindromeFileRepositoryImpl implements PalindromeRepository {
     private String fileName;
 
     @Override
-    public void write(String message) {
+    public synchronized void write(String message) {
         log.info("Storing message in the database");
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
             if(!containsMessage(message)) {
                 writer.write(String.format("%s%n",message));
                 log.info("Message successfully stored in the database");
             }
-            writer.close();
         } catch (IOException ex) {
             throw new DataStorageException(ex.getMessage());
         }
@@ -47,12 +45,14 @@ public class PalindromeFileRepositoryImpl implements PalindromeRepository {
                 file.createNewFile();
                 return fileData;
             }
-            BufferedReader reader = new BufferedReader(new FileReader(fileName));
-            String line;
-            while((line = reader.readLine())!=null) {
-                fileData.add(line);
+            try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+                String line;
+                while((line = reader.readLine())!=null) {
+                    fileData.add(line);
+                }
+            } catch (IOException ex) {
+                throw new DataStorageException(ex.getMessage());
             }
-            reader.close();
         } catch (IOException ex) {
             throw new DataStorageException(ex.getMessage());
         }

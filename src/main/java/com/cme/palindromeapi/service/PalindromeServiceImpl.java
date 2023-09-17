@@ -39,22 +39,18 @@ public class PalindromeServiceImpl implements PalindromeService {
             StoredTextValue storedTextValue = generateStoredTextValue(textValueToLowerCase, textValueIsPalindrome);
             cacheService.storeProcessedValue(storedTextValue);
             publisher.sendMessage(storedTextValue);
-            return generateResponse(String.format("isPalindrome: %s", textValueIsPalindrome));
+            return generateResponse(200, String.format("isPalindrome: %s", textValueIsPalindrome), HttpStatus.OK);
         }
         log.info("Returning existing value...");
-        return generateResponse(String.format("isPalindrome: %s", cachedValue.isPalindrome()));
+        return generateResponse(200, String.format("isPalindrome: %s", cachedValue.isPalindrome()), HttpStatus.OK);
     }
 
     private StoredTextValue generateStoredTextValue(String textValue, boolean textValueIsPalindrome) {
         return new StoredTextValue(textValue, textValueIsPalindrome);
     }
 
-    private ResponseObject generateResponse(String data) {
-        ResponseObject response = new ResponseObject();
-        response.setCode(200);
-        response.setData(data);
-        response.setHttpStatus(HttpStatus.OK);
-        return response;
+    private ResponseObject generateResponse(int code, String data, HttpStatus status) {
+        return new ResponseObject(code, data, status);
     }
 
     private boolean isPalindrome(String textValue) {

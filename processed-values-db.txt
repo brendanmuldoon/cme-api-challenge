@@ -7,3 +7,5 @@
 {"textValue":"turn","palindrome":false}
 {"textValue":"bood","palindrome":false}
 {"textValue":"dood","palindrome":true}
+{"textValue":"book","palindrome":false}
+{"textValue":"fork","palindrome":false}
